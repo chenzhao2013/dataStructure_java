@@ -1,7 +1,11 @@
 package com.cz.sort;
 
-import java.util.Arrays;
-
+/**
+ * ①快速排序
+ * ②归并排序
+ * @author ChenZhao
+ *
+ */
 public class MoreSort {
 
 	public static void main(String[] args) {
@@ -17,7 +21,8 @@ public class MoreSort {
 			int mid = (first + last) / 2;
 			mergeSort(a, tempArray, first, mid);
 			mergeSort(a, tempArray, mid+1, last);
-			merge(a, tempArray, first, mid, last);
+			if(a[mid]>a[mid+1])//当左边数组值全部小于或者等于右边数据，则不需要归并
+				merge(a, tempArray, first, mid, last);
 		}
 	}
 
@@ -27,6 +32,7 @@ public class MoreSort {
 		int rightBegin = mid + 1;
 		int rightEnd = last;
 		int index = first;
+		//比较两个子数组，按从小到大的顺序将数据拷贝到临时数组
 		while(leftBegin<=leftEnd && rightBegin<=rightEnd) {
 			if(a[leftBegin] <= a[rightBegin]) {
 				tempArray[index] = a[leftBegin];
@@ -37,17 +43,20 @@ public class MoreSort {
 			}
 			index++;
 		}
-		if(leftBegin>leftEnd) {
+		//将一个数组中剩下的值拷贝到临时数组
+		if(leftBegin>leftEnd) {// 左数组已经全部复制
 			//将右边剩余项复制到数组
 			for(int i=rightBegin;i<=rightEnd;i++) {
 				tempArray[index++] = a[i];
 			}
 		}
-		if(rightBegin>rightEnd) {
+		if(rightBegin>rightEnd) {//右数组已经全部复制
+			//将左边剩余项复制到数组
 			for(int i=leftBegin;i<=leftEnd;i++)
 				tempArray[index++] = a[i];
 		}
-		for(int i=0;i<index;i++)
+		//将临时数组拷贝到原数组
+		for(int i=first;i<index;i++)
 			a[i] = tempArray[i];
 	}
 }
