@@ -1,5 +1,11 @@
 package com.cz.sort;
-
+/**
+ * ① shell sort
+ * ② insert sort iterator & recursive
+ * ③ select sort iterator & recursive
+ * @author ChenZhao
+ *
+ */
 public class SortArray {
 	
 	public static void main(String[] args) {
@@ -38,13 +44,6 @@ public class SortArray {
 			insertInOrder_Recursive(a, a[last], first, --last);
 		}
 	}
-	//插入排序
-	public static void insertSorted(int[] a, int first, int last) {
-		for(int unsorted = first+1; unsorted<=last; unsorted++) {
-			int unsortedItem = a[unsorted];
-			insertInOrder(a, unsortedItem, first, unsorted-1);
-		}
-	}
 	private static void insertInOrder_Recursive(int[] a, int item, int first, int end) {
 		if(item>a[end]) {
 			a[end+1] = item;
@@ -54,6 +53,13 @@ public class SortArray {
 		} else {
 			a[end+1] = a[end];
 			a[end] = item;
+		}
+	}
+	//迭代插入排序
+	public static void insertSorted(int[] a, int first, int last) {
+		for(int unsorted = first+1; unsorted<=last; unsorted++) {
+			int unsortedItem = a[unsorted];
+			insertInOrder(a, unsortedItem, first, unsorted-1);
 		}
 	}
 	private static void insertInOrder(int[] a, int unsortedItem, int first, int last) {
