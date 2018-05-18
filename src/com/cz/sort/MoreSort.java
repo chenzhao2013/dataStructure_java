@@ -1,8 +1,8 @@
 package com.cz.sort;
 
 /**
- * ①快速排序
- * ②归并排序
+ * ①快速排序 平均是O(nlogn)
+ * ②归并排序 一直是O(nlogn)
  * @author ChenZhao
  *
  */

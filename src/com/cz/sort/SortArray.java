@@ -1,8 +1,8 @@
 package com.cz.sort;
 /**
- * ① shell sort
- * ② insert sort iterator & recursive
- * ③ select sort iterator & recursive
+ * ① shell sort O(n^1.5)
+ * ② insert sort iterator & recursive O(n^2)
+ * ③ select sort iterator & recursive O(n^2)
  * @author ChenZhao
  *
  */
