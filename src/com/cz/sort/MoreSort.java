@@ -1,5 +1,7 @@
 package com.cz.sort;
 
+import com.sun.org.apache.xml.internal.security.Init;
+
 /**
  * ①基数排序 平均是O(n)
  * ②快速排序 平均是O(nlogn)
@@ -10,12 +12,15 @@ package com.cz.sort;
 public class MoreSort {
 
 	public static void main(String[] args) {
-		int[] a = {1,7,4,2,6,10,3,4};
+		int[] a = {9,6,2,4,8,7,5,3};
 //		int [] temp = new int[8];
 		MoreSort.quickSort(a, 0, a.length-1);
 		for(int each: a) {
 			System.out.println(each);
 		}
+	}
+	public static void radixSort(int[] a, int first, int last, int maxDigits) {
+		
 	}
 	public static void quickSort(int[] a, int first, int last) {
 		int MIN_SIZE = 4;//当小于4时，使用插入排序
