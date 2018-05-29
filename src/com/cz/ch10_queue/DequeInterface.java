@@ -13,11 +13,11 @@ public interface DequeInterface<T> {
 	/**
 	 * 在队首删除元素
 	 */
-	void removeFront();
+	T removeFront();
 	/**
 	 * 在队尾删除元素
 	 */
-	void removeBack();
+	T removeBack();
 	/**
 	 * 获取队首元素
 	 */

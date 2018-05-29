@@ -23,44 +23,66 @@ public class LinkedDeque<T> implements DequeInterface<T> {
 
 	@Override
 	public void addToBack(T entry) {
-		// TODO Auto-generated method stub
-		
+		DLNode<T> newNode = new DLNode<T>(lastNode, null, entry);
+		if(isEmpty()) {
+			frontNode = newNode;
+		}else {
+			lastNode.setNextNode(newNode);
+		}
+		lastNode = newNode;
 	}
 
 	@Override
-	public void removeFront() {
-		// TODO Auto-generated method stub
-		
+	public T removeFront() {
+		T frontEntry = getFront();
+		frontNode = frontNode.getNextNode();
+		if(frontNode==null) {
+			lastNode = null;
+		}else {
+			frontNode.setPreNode(null);
+		}
+		return frontEntry;
 	}
 
 	@Override
-	public void removeBack() {
-		// TODO Auto-generated method stub
-		
+	public T removeBack() {
+		T lastEntry = getBack();
+		lastNode = lastNode.getPreNode();
+		if(lastNode==null) {
+			frontNode = null;
+		}else {
+			lastNode.setNextNode(null);
+		}
+		return lastEntry;
 	}
 
 	@Override
 	public T getFront() {
-		// TODO Auto-generated method stub
-		return null;
+		if(isEmpty()) {
+			throw new EmptyQueueException();
+		}else {
+			return frontNode.getEntry();
+		}
 	}
 
 	@Override
 	public T getBack() {
-		// TODO Auto-generated method stub
-		return null;
+		if(isEmpty()) {
+			throw new EmptyQueueException();
+		}else {
+			return lastNode.getEntry();
+		}
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return frontNode==lastNode;
 	}
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		while(!isEmpty())
+			removeFront();
 	}
 
 
