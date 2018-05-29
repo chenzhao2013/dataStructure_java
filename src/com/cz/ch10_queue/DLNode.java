@@ -2,25 +2,25 @@ package com.cz.ch10_queue;
 
 public class DLNode<T> {
 
-	private Node<T> preNode;
-	private Node<T> nextNode;
+	private DLNode<T> preNode;
+	private DLNode<T> nextNode;
 	private T entry;
-	public DLNode(Node<T> preNode, Node<T> nextNode, T entry) {
+	public DLNode(DLNode<T> preNode, DLNode<T> nextNode, T entry) {
 		super();
 		this.preNode = preNode;
 		this.nextNode = nextNode;
 		this.entry = entry;
 	}
-	public Node<T> getPreNode() {
+	public DLNode<T> getPreNode() {
 		return preNode;
 	}
-	public void setPreNode(Node<T> preNode) {
+	public void setPreNode(DLNode<T> preNode) {
 		this.preNode = preNode;
 	}
-	public Node<T> getNextNode() {
+	public DLNode<T> getNextNode() {
 		return nextNode;
 	}
-	public void setNextNode(Node<T> nextNode) {
+	public void setNextNode(DLNode<T> nextNode) {
 		this.nextNode = nextNode;
 	}
 	public T getEntry() {

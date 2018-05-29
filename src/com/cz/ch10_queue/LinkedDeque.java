@@ -12,8 +12,13 @@ public class LinkedDeque<T> implements DequeInterface<T> {
 
 	@Override
 	public void addToFront(T entry) {
-		// TODO Auto-generated method stub
-		
+		DLNode<T> newNode = new DLNode<T>(null, frontNode, entry);
+		if(isEmpty()) {
+			lastNode = newNode;
+		}else {
+			frontNode.setPreNode(newNode);
+		}
+		frontNode = newNode;
 	}
 
 	@Override
