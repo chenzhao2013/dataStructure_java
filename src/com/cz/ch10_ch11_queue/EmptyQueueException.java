@@ -1,4 +1,4 @@
-package com.cz.ch10_queue;
+package com.cz.ch10_ch11_queue;
 
 import java.util.Queue;
 
