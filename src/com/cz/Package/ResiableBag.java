@@ -1,9 +1,6 @@
 package com.cz.Package;
 
 import java.util.Arrays;
-
-import com.sun.prism.Image;
-
 public class ResiableBag<T> implements BagInterface<T> {
 
 	private T[] bag;
@@ -93,6 +90,7 @@ public class ResiableBag<T> implements BagInterface<T> {
 	@Override
 	public T[] toArray() {
 		checkInitialization();
+		@SuppressWarnings("unchecked")
 		T[] temp = (T[]) new Object[numberOfEntries];
 		for(int i=0;i<numberOfEntries;i++) {
 			temp[i] = this.bag[i];
