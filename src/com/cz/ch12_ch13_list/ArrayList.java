@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.w3c.dom.ls.LSInput;
+
 public class ArrayList<T> implements ListInterface<T> {
 
 	public static final int DEFAULT_CAPACITY = 100;
@@ -39,32 +41,76 @@ public class ArrayList<T> implements ListInterface<T> {
 	
 	@Override
 	public void add(int position, T entry) {
-		// TODO Auto-generated method stub
-		
+		checkInitialization();
+		if(position>=0 && position<=numOfEntries) {
+			if(position <= numOfEntries) {
+				makeRoom(position);
+			}
+			list[position] = entry;
+			numOfEntries++;
+			ensureCapacity();
+		}else {
+			throw new IndexOutOfBoundsException("index out of bounds");
+		}
 	}
 
+	private void makeRoom(int position) {
+		assert position>=0 && position <= numOfEntries;
+		for(int i=numOfEntries-1;i>=position;i--) {
+			list[i+1] = list[i];
+		}
+	}
 	@Override
 	public T remove(int position) {
-		// TODO Auto-generated method stub
-		return null;
+		checkInitialization();
+		if(position>=0 && position <numOfEntries) {
+			T result = list[position];
+			if(position < numOfEntries-1) {
+				removeGap(position);
+			}
+			numOfEntries--;
+			list[numOfEntries]=null;//原來位置置空
+			return result;
+		}else {
+			throw new IndexOutOfBoundsException("ILLEGAL INDEX");
+		}
 	}
 
+	private void removeGap(int position) {
+		if(position>=0 && position < numOfEntries-1) {
+			for(int i=position;i<numOfEntries-1;i++) {
+				list[i] = list[i+1];
+			}
+		}
+	}
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		checkInitialization();
+		while(!isEmpty()) {
+			remove(numOfEntries-1);
+		}
 	}
 
 	@Override
 	public T replace(int position, T entry) {
-		// TODO Auto-generated method stub
-		return null;
+		if(position>=0 && position < numOfEntries) {
+			assert !isEmpty();
+			T origin = list[position];
+			list[position] = entry;
+			return origin;
+		}else {
+			throw new IndexOutOfBoundsException();
+		}
 	}
 
 	@Override
 	public T getEntry(int position) {
-		// TODO Auto-generated method stub
-		return null;
+		checkInitialization();
+		if(position>=0 && position < numOfEntries) {
+			return list[position];
+		}else {
+			throw new IndexOutOfBoundsException();
+		}
 	}
 
 	@Override
@@ -80,20 +126,28 @@ public class ArrayList<T> implements ListInterface<T> {
 
 	@Override
 	public boolean contain(T entry) {
-		// TODO Auto-generated method stub
-		return false;
+		checkInitialization();
+		boolean found = false;
+		int index = 0;
+		while(!found && index < numOfEntries) {
+			if(entry.equals(list[index])) {
+				found = true;
+			}
+			index++;
+		}
+		return found;
 	}
 
 	@Override
 	public int getLength() {
 		// TODO Auto-generated method stub
-		return 0;
+		return numOfEntries;
 	}
 
 	@Override
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
-		return false;
+		return numOfEntries==0;
 	}
 	private void checkCapacity(int capacity) {
 		if(capacity>MAX_CAPACITY) {
@@ -106,9 +160,11 @@ public class ArrayList<T> implements ListInterface<T> {
 		}
 	}
 	private void ensureCapacity() {
-		int size = this.list.length * 2;
-		checkCapacity(size);
-		Arrays.copyOf(list, size);
+		if(this.numOfEntries>=this.list.length) {
+			int size = this.list.length * 2;
+			checkCapacity(size);
+			Arrays.copyOf(list, size);
+		}
 	}
 	@Override
 	public Iterator<T> iterator() {

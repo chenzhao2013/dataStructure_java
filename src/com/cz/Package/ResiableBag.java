@@ -107,9 +107,12 @@ public class ResiableBag<T> implements BagInterface<T> {
 	}
 	//TODO
 	private void doubleCapacity() {
-		int size = 2 * this.bag.length;
-		checkCapacity(size);
-		Arrays.copyOf(this.bag, size);
+		if(numberOfEntries>=this.bag.length) {
+			int size = 2 * this.bag.length;
+			checkCapacity(size);
+			Arrays.copyOf(this.bag, size);
+		}
+		
 	}
 	public void checkInitialization() {
 		if(!this.initialed)
