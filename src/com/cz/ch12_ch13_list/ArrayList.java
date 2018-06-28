@@ -1,6 +1,8 @@
 package com.cz.ch12_ch13_list;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ArrayList<T> implements ListInterface<T> {
 
@@ -28,7 +30,7 @@ public class ArrayList<T> implements ListInterface<T> {
 	@Override
 	public void add(T entry) {
 		checkInitialization();
-		list[numOfEntries+1] = entry;
+		list[numOfEntries] = entry;
 		numOfEntries++;
 		ensureCapacity();
 	}
@@ -107,5 +109,27 @@ public class ArrayList<T> implements ListInterface<T> {
 		int size = this.list.length * 2;
 		checkCapacity(size);
 		Arrays.copyOf(list, size);
+	}
+	@Override
+	public Iterator<T> iterator() {
+		// TODO Auto-generated method stub
+		return new Iterator<T>() {
+			int current = 0;
+			//boolean hasNext = true;
+			@Override
+			public boolean hasNext() {
+				// TODO Auto-generated method stub
+				return current<numOfEntries;
+			}
+
+			@Override
+			public T next() {
+				if(hasNext()) {
+					return list[current++];
+				}else {
+					throw new NoSuchElementException();
+				}
+			}
+		};
 	}
 }

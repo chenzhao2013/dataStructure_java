@@ -1,8 +1,6 @@
 package com.cz.ch12_ch13_list;
 
-import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Replace;
-
-public interface ListInterface<T> {
+public interface ListInterface<T> extends Iterable<T>{
 
 	/**
 	 * 线性表尾添加数据项

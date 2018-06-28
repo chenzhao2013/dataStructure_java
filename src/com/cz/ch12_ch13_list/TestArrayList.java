@@ -1,8 +1,7 @@
 package com.cz.ch12_ch13_list;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,14 +13,17 @@ public class TestArrayList {
 
 	@Test
 	public void test() {
-		List<Integer> list = new ArrayList<>();
-		list.add(1);
-		list.add(3);
-		list.add(2);
-		list.add(1, 10);
-		list.forEach(item->{
+		ListInterface<String> list = new ArrayList<>(10);
+		list.add("a");
+		list.add("b");
+		list.add("c");
+		for(String item : list) {
 			System.out.println(item);
-		});
+		}
+		Iterator<String> iterator = list.iterator();
+		while(iterator.hasNext()) {
+			System.out.println(iterator.next());
+		}
 	}
 
 }
