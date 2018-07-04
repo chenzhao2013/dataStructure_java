@@ -1,6 +1,8 @@
 package com.cz.ch12_ch13_list;
 
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,14 +15,27 @@ class LListTest {
 	@Test
 	void testAdd() {
 		LList<String> list = new LList<>();
-		list.add("aa");
-		list.add("bb");
-		list.add("cc");
-		list.add(2,"bb2");
+		int index =0;
+		long timeStamp = System.currentTimeMillis();
+		System.out.println(timeStamp);
+		while(index!=100000) {
+			list.add(""+index);
+			index++;
+		}
+		System.out.println((System.currentTimeMillis()-timeStamp));
+//		list.add("aa");
+//		list.add("bb");
+//		list.add("cc");
+//		list.add(2,"bb2");
+		long timeStamp2 = System.currentTimeMillis();
 		for(String item : list) {
 			System.out.println(item);
 		}
+		System.out.println((System.currentTimeMillis()-timeStamp2));
 //		list.iterator();
+		ArrayList<String> arrayList = new ArrayList<>();
+		arrayList.listIterator();
+		arrayList.iterator();
 	}
 
 }
