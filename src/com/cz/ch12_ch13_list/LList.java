@@ -69,8 +69,22 @@ public class LList<T> implements ListInterface<T> {
 
 	@Override
 	public T remove(int position) {
-		// TODO Auto-generated method stub
-		return null;
+		T result = null;
+		if(position>=1 && position <= numOfEntries) {
+			if(position == 1) {
+				result = firstNode.getData();
+				firstNode = firstNode.getNext();
+			} else {
+				Node<T> nodeBefore = getNodeAt(position-1);
+				Node<T> nodeToRemove = nodeBefore.getNext();
+				result = nodeToRemove.getData();
+				nodeBefore.setNext(nodeToRemove.getNext());
+			}
+			numOfEntries--;
+			return result;
+		} else {
+			throw new IndexOutOfBoundsException();
+		}
 	}
 
 	@Override
@@ -80,14 +94,27 @@ public class LList<T> implements ListInterface<T> {
 
 	@Override
 	public T replace(int position, T entry) {
-		// TODO Auto-generated method stub
-		return null;
+		T result = null;
+		if(position>=1 && position<=numOfEntries) {
+			Node<T> nodeToReplace = getNodeAt(position);
+			result = nodeToReplace.getData();
+			nodeToReplace.setData(entry);
+			return result;
+		} else {
+			throw new IndexOutOfBoundsException();
+		}
 	}
 
 	@Override
 	public T getEntry(int position) {
-		// TODO Auto-generated method stub
-		return null;
+		T result = null;
+		if(1<=position && position <= numOfEntries) {
+			Node<T> node = getNodeAt(position);
+			result = node.getData();
+			return result;
+		} else {
+			throw new IndexOutOfBoundsException();
+		}
 	}
 
 	@Override
@@ -106,8 +133,16 @@ public class LList<T> implements ListInterface<T> {
 
 	@Override
 	public boolean contain(T entry) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean found = false;
+		Node<T> currentNode = firstNode;
+		while(!found && currentNode!=null) {
+			if(entry.equals(currentNode.getData())) {
+				found = true;
+			} else {
+				currentNode = currentNode.getNext();
+			}
+		}
+		return found;
 	}
 
 	@Override
