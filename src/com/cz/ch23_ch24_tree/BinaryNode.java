@@ -45,10 +45,34 @@ class BinaryNode<T> {
 		return leftNode == null && rightNode == null;
 	}
 	public int getNumberOfNodes() {
-		return 0;
+		return getNo(this);
+	}
+	private int getNo(BinaryNode<T> binaryNode) {
+		//1
+//		int no = 0;
+//		if(binaryNode!=null)
+//			no = 1 + getNo(binaryNode.leftNode)+getNo(binaryNode.rightNode);
+//		return no;
+		//2 
+		int leftNO = 0;
+		int rightNO = 0;
+		if(leftNode != null) {
+			leftNO = leftNode.getNumberOfNodes();
+		}
+		if(rightNode != null) {
+			rightNO = rightNode.getNumberOfNodes();
+		}
+		return 1 + leftNO + rightNO;
 	}
 	public int getHeight() {
-		return 0;
+		return getHeight(this);
+	}
+	private int getHeight(BinaryNode<T> binaryNode) {
+		int height = 0;
+		if(binaryNode != null) {
+			height = 1+ Math.max(getHeight(binaryNode.leftNode), getHeight(binaryNode.rightNode));
+		}
+		return height;
 	}
 	public BinaryNode<T> copy() {
 		BinaryNode<T> newRoot = new BinaryNode<>(data);

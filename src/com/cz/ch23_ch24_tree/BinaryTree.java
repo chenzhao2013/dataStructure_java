@@ -42,26 +42,24 @@ public class BinaryTree<T> implements BinaryTreeInterface<T>{
 
 	@Override
 	public T getRootData() {
-		// TODO Auto-generated method stub
+		if(isEmpty())
+			throw new IllegalStateException();
 		return root.getData();
 	}
 
 	@Override
 	public int getHeight() {
-		// TODO Auto-generated method stub
-		return 0;
+		return root.getHeight();
 	}
 
 	@Override
 	public int getNumberOfNodes() {
-		// TODO Auto-generated method stub
-		return 0;
+		return root.getNumberOfNodes();
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return root == null;
 	}
 
 	@Override
@@ -94,15 +92,43 @@ public class BinaryTree<T> implements BinaryTreeInterface<T>{
 	}
 
 	@Override
-	public void setData() {
-		// TODO Auto-generated method stub
-		
+	public void setData(T rootData) {
+		root.setData(rootData);
 	}
 
 	@Override
 	public void setTree(T rootData, BinaryTreeInterface<T> leftTree, BinaryTreeInterface<T> rightTree) {
-		// TODO Auto-generated method stub
-		
+		privateSetTree(rootData, (BinaryTree<T>)leftTree, (BinaryTree<T>)rightTree);
 	}
-
+	public void inorderTraverse() {
+		inorderTraverse(root);
+	}
+	public void preorderTraverse() {
+		preorderTraverse(root);
+	}
+	public void postorderTraverse() {
+		postorderTraverse(root);
+	}
+	private void inorderTraverse(BinaryNode<T> node) {
+		if(node != null) {
+			inorderTraverse(node.getLeftNode());
+			System.out.println(node.getData());
+			inorderTraverse(node.getRightNode());
+		}
+	}
+	
+	private void preorderTraverse(BinaryNode<T> node) {
+		if(node != null) {
+			System.out.println(node.getData());
+			preorderTraverse(node.getLeftNode());
+			preorderTraverse(node.getRightNode());
+		}
+	}
+	private void postorderTraverse(BinaryNode<T> node) {
+		if(node != null) {
+			postorderTraverse(node.getRightNode());
+			postorderTraverse(node.getRightNode());
+			System.out.println(node.getData());
+		}
+	}
 }
