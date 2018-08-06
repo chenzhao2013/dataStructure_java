@@ -2,7 +2,11 @@ package com.cz.ch23_ch24_tree;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Stack;
 
+import javax.swing.text.DefaultEditorKit.CutAction;
+
+import com.cz.Stack.LinkedStack;
 import com.cz.Stack.StackInterface;
 
 public class BinaryTree<T> implements BinaryTreeInterface<T>{
@@ -72,14 +76,12 @@ public class BinaryTree<T> implements BinaryTreeInterface<T>{
 
 	@Override
 	public Iterator<T> getPreorderIterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new PreorderIterator();
 	}
 
 	@Override
 	public Iterator<T> getPostorderIterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new PostorderIterator();
 	}
 
 	@Override
@@ -128,16 +130,20 @@ public class BinaryTree<T> implements BinaryTreeInterface<T>{
 	}
 	private void postorderTraverse(BinaryNode<T> node) {
 		if(node != null) {
-			postorderTraverse(node.getRightNode());
+			postorderTraverse(node.getLeftNode());
 			postorderTraverse(node.getRightNode());
 			System.out.println(node.getData());
 		}
 	}
 	
-	private class InorderIterator<T> implements Iterator<T>{
+	private class InorderIterator implements Iterator<T>{
 
 		private StackInterface<BinaryNode<T>> stack;
 		private BinaryNode<T> currentNode;
+		public InorderIterator() {
+			stack = new LinkedStack<>();
+			currentNode = root;
+		}
 		@Override
 		public boolean hasNext() {
 			return !stack.isEmpty() || currentNode != null;
@@ -159,6 +165,72 @@ public class BinaryTree<T> implements BinaryTreeInterface<T>{
 			}
 			return nextNode.getData();
 		}
+	}
+	private class PreorderIterator implements Iterator<T>{
+
+		private Stack<BinaryNode<T>> stack = null;
+		private BinaryNode<T> currentNode = null;
+		public PreorderIterator() {
+			stack = new Stack<>();
+			currentNode = root;
+		}
+		@Override
+		public boolean hasNext() {
+			return !stack.isEmpty() || currentNode != null;
+		}
+		@Override
+		public T next() {
+			BinaryNode<T> nextNode = null;
+			if(currentNode != null) {
+				stack.push(currentNode);
+			}
+			if(!stack.isEmpty()) {
+				nextNode = stack.pop();
+				if( nextNode.hasRightNode()) {
+					stack.push(nextNode.getRightNode());
+				}
+				currentNode = nextNode.getLeftNode();
+			}
+			return nextNode.getData();
+		}
+	}
+	
+	private class PostorderIterator implements Iterator<T>{
+
+		private BinaryNode<T> currentNode;
+		private BinaryNode<T> preNode;
+		private Stack<BinaryNode<T>> stack;
 		
+		public PostorderIterator() {
+			currentNode = root;
+			preNode = null;
+			stack = new Stack<>();
+		}
+		@Override
+		public boolean hasNext() {
+			return !stack.isEmpty() || currentNode != null;
+		}
+
+		@Override
+		public T next() {
+			BinaryNode<T> nextNode = currentNode;
+			while(true) {
+				if( currentNode != null) {
+					stack.push(currentNode);
+					currentNode = currentNode.getLeftNode();
+				} else {
+					currentNode = stack.peek();
+					if(currentNode.hasRightNode() && preNode != currentNode.getRightNode()) {
+						currentNode = currentNode.getRightNode();						
+					} else {
+						break;
+					}
+				}
+			}
+			currentNode = preNode = stack.pop();
+			nextNode = currentNode;
+			currentNode = null;
+			return nextNode.getData();
+		}
 	}
 }
