@@ -1,6 +1,9 @@
 package com.cz.ch23_ch24_tree;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+import com.cz.Stack.StackInterface;
 
 public class BinaryTree<T> implements BinaryTreeInterface<T>{
 
@@ -81,8 +84,7 @@ public class BinaryTree<T> implements BinaryTreeInterface<T>{
 
 	@Override
 	public Iterator<T> getInorderIterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new InorderIterator();
 	}
 
 	@Override
@@ -130,5 +132,33 @@ public class BinaryTree<T> implements BinaryTreeInterface<T>{
 			postorderTraverse(node.getRightNode());
 			System.out.println(node.getData());
 		}
+	}
+	
+	private class InorderIterator<T> implements Iterator<T>{
+
+		private StackInterface<BinaryNode<T>> stack;
+		private BinaryNode<T> currentNode;
+		@Override
+		public boolean hasNext() {
+			return !stack.isEmpty() || currentNode != null;
+		}
+
+		@Override
+		public T next() {
+			BinaryNode<T> nextNode = null;
+			while(currentNode!=null) {
+				stack.push(currentNode);
+				currentNode = currentNode.getLeftNode();
+			}
+			if(!stack.isEmpty()) {
+				nextNode = stack.pop();
+				assert nextNode != null;
+				currentNode = nextNode.getRightNode();
+			} else {
+				throw new NoSuchElementException();
+			}
+			return nextNode.getData();
+		}
+		
 	}
 }
