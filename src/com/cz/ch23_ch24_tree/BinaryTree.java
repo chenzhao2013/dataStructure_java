@@ -1,7 +1,9 @@
 package com.cz.ch23_ch24_tree;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import java.util.Queue;
 import java.util.Stack;
 
 import javax.swing.text.DefaultEditorKit.CutAction;
@@ -91,8 +93,7 @@ public class BinaryTree<T> implements BinaryTreeInterface<T>{
 
 	@Override
 	public Iterator<T> getLevelorderIterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new LevelorderIterator();
 	}
 
 	@Override
@@ -112,6 +113,9 @@ public class BinaryTree<T> implements BinaryTreeInterface<T>{
 	}
 	public void postorderTraverse() {
 		postorderTraverse(root);
+	}
+	public void levelTraverse() {
+		levelorderTraverse(root);
 	}
 	private void inorderTraverse(BinaryNode<T> node) {
 		if(node != null) {
@@ -135,7 +139,21 @@ public class BinaryTree<T> implements BinaryTreeInterface<T>{
 			System.out.println(node.getData());
 		}
 	}
-	
+	private void levelorderTraverse(BinaryNode<T> node) {
+		Queue<BinaryNode<T>> queue = new LinkedList<>();
+		if(node == null)
+			return;
+		queue.offer(node);
+		Iterator<BinaryNode<T>> iterator = queue.iterator();
+		while(iterator.hasNext()) {
+			BinaryNode<T> tmp = queue.poll();
+			if(tmp.hasLeftNode())
+				queue.offer(tmp.getLeftNode());
+			if(tmp.hasRightNode())
+				queue.offer(tmp.getRightNode());
+			System.out.println(tmp.getData());
+		}
+	}
 	private class InorderIterator implements Iterator<T>{
 
 		private StackInterface<BinaryNode<T>> stack;
@@ -232,5 +250,32 @@ public class BinaryTree<T> implements BinaryTreeInterface<T>{
 			currentNode = null;
 			return nextNode.getData();
 		}
+	}
+	
+	private class LevelorderIterator implements Iterator<T>{
+
+		private Queue<BinaryNode<T>> queue;
+		private BinaryNode<T> currentNode;
+		public LevelorderIterator() {
+			queue = new LinkedList<>();
+			currentNode = root;
+			if(currentNode!=null)
+				queue.offer(currentNode);
+		}
+		@Override
+		public boolean hasNext() {
+			return !queue.isEmpty();
+		}
+
+		@Override
+		public T next() {
+			BinaryNode<T> next = queue.poll();
+			if(next.hasLeftNode())
+				queue.offer(next.getLeftNode());
+			if(next.hasRightNode())
+				queue.offer(next.getRightNode());
+			return next.getData();
+		}
+		
 	}
 }
