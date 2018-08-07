@@ -1,6 +1,6 @@
 package com.cz.ch23_ch24_tree;
 
-class BinaryNode<T> {
+public class BinaryNode<T> {
 
 	private BinaryNode<T> leftNode;
 	private T data;

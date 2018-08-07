@@ -97,7 +97,7 @@ public class BinaryTree<T> implements BinaryTreeInterface<T>{
 	}
 
 	@Override
-	public void setData(T rootData) {
+	public void setTree(T rootData) {
 		root.setData(rootData);
 	}
 
