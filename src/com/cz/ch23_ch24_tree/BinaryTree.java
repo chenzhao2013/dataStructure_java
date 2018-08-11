@@ -56,6 +56,16 @@ public class BinaryTree<T> implements BinaryTreeInterface<T>{
 		return root.getData();
 	}
 
+	protected void setRootData(T entry) {
+		root.setData(entry);
+	}
+	
+	protected void setRootNode(BinaryNode<T> binaryNode) {
+		root = binaryNode;
+	}
+	protected BinaryNode<T> getRootNode() {
+		return root;
+	}
 	@Override
 	public int getHeight() {
 		return root.getHeight();
