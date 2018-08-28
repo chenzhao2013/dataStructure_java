@@ -138,7 +138,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTre
 		if(currNode != null) {
 			result = currNode.getData();
 			if(currNode.hasLeftNode() && currNode.hasRightNode()) {
-				//找到需要删除的结点
+				//找到可以替换currNode的结点
 				//nodeToRemove = ;
 				prioNode = currNode;
 				BinaryNode<T> rightNode = currNode.getLeftNode();
@@ -148,7 +148,8 @@ public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTre
 				}
 				nodeToRemove = rightNode;
 				parNode = prioNode;
-//				currNode.setData(rightNode.getData());
+				//将即将删除的结点的数据代替当前结点的数值
+				currNode.setData(rightNode.getData());
 //				currNode = rightNode;
 			}
 			
