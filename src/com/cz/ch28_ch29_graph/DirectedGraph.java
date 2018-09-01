@@ -1,63 +1,86 @@
 package com.cz.ch28_ch29_graph;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class DirectedGraph<T> implements BasicGraphInterface<T> {
 
-	private Map<T, VertexInterface<T>> vertextMap;
+	private Map<T, VertexInterface<T>> vertexMap;
 	private int edgeCount;
 	
 	public DirectedGraph() {
-		vertextMap = new HashMap<>();
+		vertexMap = new HashMap<>();
 		edgeCount = 0;
 	}
 	@Override
 	public boolean addVertex(T vertexLabel) {
-		VertexInterface<T> vertexInterface = vertextMap.put(vertexLabel, new Vertex<T>(vertexLabel));
+		VertexInterface<T> vertexInterface = vertexMap.put(vertexLabel, new Vertex<T>(vertexLabel));
 		return vertexInterface == null;
 	}
 
 	@Override
 	public boolean addEdge(T begin, T end, double weight) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean result = false;
+		VertexInterface<T> beginV = vertexMap.get(begin);
+		VertexInterface<T> endV = vertexMap.get(end);
+		if(beginV != null && endV != null) {
+			result = beginV.connect(endV, weight);
+		}
+		if(result)
+			edgeCount++;
+		return result;
 	}
 
 	@Override
 	public boolean addEdge(T begin, T end) {
-		// TODO Auto-generated method stub
-		return false;
+		return addEdge(begin, end, 0);
 	}
 
 	@Override
 	public boolean hasEdge(T begin, T end) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean found = false;
+		VertexInterface<T> beginV = vertexMap.get(begin);
+		VertexInterface<T> endV = vertexMap.get(end);
+		if(beginV!=null && endV!=null) {
+			Iterator<VertexInterface<T>> neighborIte = beginV.getNeighborIterator(); 
+			while(!found && neighborIte.hasNext()) {
+				VertexInterface<T> vertex = neighborIte.next();
+				if(endV.equals(vertex))
+					found = true;
+			}
+		}
+		return found;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return vertexMap.isEmpty();
 	}
 
 	@Override
 	public int getNOOfVertex() {
-		// TODO Auto-generated method stub
-		return 0;
+		return vertexMap.size();
 	}
 
 	@Override
 	public int getNOOfEdge() {
-		// TODO Auto-generated method stub
-		return 0;
+		return edgeCount;
 	}
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		vertexMap.clear();
 	}
 
+	protected void resetVertex() {
+		Iterator<Map.Entry<T, VertexInterface<T>>> entryIte = vertexMap.entrySet().iterator();
+		while(entryIte.hasNext()) {
+			Map.Entry<T, VertexInterface<T>> entry = entryIte.next();
+			VertexInterface<T> vertex = entry.getValue();
+			vertex.setCost(0);
+			vertex.setPredecessor(null);
+			vertex.unvisit();
+		}
+	}
 }
