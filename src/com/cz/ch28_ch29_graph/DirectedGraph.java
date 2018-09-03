@@ -2,6 +2,7 @@ package com.cz.ch28_ch29_graph;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 
 public class DirectedGraph<T> implements BasicGraphInterface<T> {
@@ -82,5 +83,48 @@ public class DirectedGraph<T> implements BasicGraphInterface<T> {
 			vertex.setPredecessor(null);
 			vertex.unvisit();
 		}
+	}
+	
+	public LinkedList<T> getBreadthFirstTraversal(T origin) {
+		resetVertex();
+		LinkedList<T> traversalOrder = new LinkedList<>();
+		LinkedList<VertexInterface<T>> vertexQueue = new LinkedList<>();
+		VertexInterface<T> startVertex = vertexMap.get(origin);
+		startVertex.visit();
+		traversalOrder.offerLast(origin);
+		vertexQueue.offerLast(startVertex);
+		while(!vertexQueue.isEmpty()) {
+			VertexInterface<T> currVertex = vertexQueue.pollFirst();
+			Iterator<VertexInterface<T>> neighborIte = currVertex.getNeighborIterator();
+			while(neighborIte.hasNext()) {
+				VertexInterface<T> nextNeighbor = neighborIte.next();
+				if(!nextNeighbor.isVisited()) {
+					nextNeighbor.visit();
+					vertexQueue.offerFirst(nextNeighbor);
+					traversalOrder.offerLast(nextNeighbor.getLabel());
+				} //end if
+			} //end while
+		} // end while
+		return traversalOrder;
+	}
+	public LinkedList<T> getDepthFirstTraversal(T origin){
+		LinkedList<T> traversalOrder = new LinkedList<>();
+		LinkedList<VertexInterface<T>> vertexStack = new LinkedList<>();
+		VertexInterface<T> startVertex = vertexMap.get(origin);
+		startVertex.visit();
+		vertexStack.push(startVertex);
+		traversalOrder.offerLast(origin);
+		while(!vertexStack.isEmpty()) {
+			VertexInterface<T> currVer = vertexStack.peek();
+			VertexInterface<T> unvistedNeighbor = currVer.getUnvisitedNeighbor();
+			if(unvistedNeighbor != null) {
+				unvistedNeighbor.visit();
+				traversalOrder.push(unvistedNeighbor.getLabel());
+				vertexStack.push(unvistedNeighbor);
+			} else {
+				vertexStack.pop();
+			}
+		}
+		return traversalOrder;
 	}
 }

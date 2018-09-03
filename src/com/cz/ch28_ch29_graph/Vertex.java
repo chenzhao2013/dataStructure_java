@@ -83,16 +83,28 @@ public class Vertex<T> implements VertexInterface<T> {
 		return !edgeList.isEmpty();
 	}
 
+	public boolean hasUnvisitedNeigh() {
+		boolean has = false;
+		Iterator<VertexInterface<T>> neiIte = getNeighborIterator();
+		while(!has && neiIte.hasNext()) {
+			VertexInterface<T> next = neiIte.next();
+			if(!next.isVisited()) {
+				has = true;
+				//break;
+			}
+		}
+		return has;
+	}
 	@Override
 	public VertexInterface<T> getUnvisitedNeighbor() {
 		boolean found = false;
 		VertexInterface<T> neighbor = null;
 		Iterator<VertexInterface<T>> iterator = getNeighborIterator();
 		while(!found && iterator.hasNext()) {
-			VertexInterface<T> vertexInterface = iterator.next();
-			if(this.equals(vertexInterface)) {
+			VertexInterface<T> nextNeighbor = iterator.next();
+			if(!nextNeighbor.isVisited()) {
 				found = true;
-				neighbor = vertexInterface;
+				neighbor = nextNeighbor;
 			}
 		}
 		return neighbor;
