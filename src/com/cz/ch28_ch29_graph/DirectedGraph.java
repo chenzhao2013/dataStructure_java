@@ -1,9 +1,11 @@
 package com.cz.ch28_ch29_graph;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 public class DirectedGraph<T> implements BasicGraphInterface<T> {
 
@@ -126,5 +128,88 @@ public class DirectedGraph<T> implements BasicGraphInterface<T> {
 			}
 		}
 		return traversalOrder;
+	}
+	//无权图最短路径
+	public int getShortedPath(T begin, T end, LinkedList<T> path) {
+		resetVertex();
+		LinkedList<VertexInterface<T>> queue = new LinkedList<>();
+		VertexInterface<T> beginVertex = vertexMap.get(begin);
+		VertexInterface<T> endVertex = vertexMap.get(end);
+		queue.offerLast(beginVertex);
+		beginVertex.visit();
+		boolean found = true;
+		while(!found && !queue.isEmpty()) {
+			VertexInterface<T> currVer = queue.pollFirst();
+			Iterator<VertexInterface<T>> neighIte = currVer.getNeighborIterator();
+			while(!found && neighIte.hasNext()) {
+				VertexInterface<T> nextNeigh = neighIte.next();
+				if(!nextNeigh.isVisited()) {
+					nextNeigh.visit();
+					nextNeigh.setPredecessor(currVer);
+					nextNeigh.setCost(1 + currVer.getCost());
+					queue.offerLast(nextNeigh);
+				}
+				if(nextNeigh.equals(endVertex))
+					found = true;
+			}
+		}
+		
+		int length = (int) endVertex.getCost();
+		path.push(endVertex.getLabel());
+		VertexInterface<T> vertex = endVertex;
+		while(vertex.hasProcessor()) {
+			vertex = vertex.getPredcessor();
+			path.push(vertex.getLabel());
+		}
+		return length;
+	}
+	//有权图最短路径
+	public getCheapestPath(T begin, T end, LinkedList<T> path) {
+
+		Comparator<EntryPQ> comparator = new Comparator<EntryPQ>() {
+
+			@Override
+			public int compare(DirectedGraph<T>.EntryPQ o1, DirectedGraph<T>.EntryPQ o2) {
+				return (int) (o1.getCost()-o2.getCost());
+			}
+		};
+		PriorityQueue<EntryPQ> priorityQueue = new PriorityQueue<>(comparator);
+		VertexInterface<T> beginVertex = vertexMap.get(begin);
+		VertexInterface<T> endVertex = vertexMap.get(end);
+		EntryPQ beginEntry = new EntryPQ(beginVertex, 0, null);
+		priorityQueue.add(beginEntry);
+		boolean found = false;
+		while(!isEmpty() && found) {
+			
+		}
+	}
+	private class EntryPQ{
+		private VertexInterface<T> vertex;
+		private double cost;
+		private VertexInterface<T> precessor;
+		public EntryPQ(VertexInterface<T> vertex, double cost, VertexInterface<T> precessor) {
+			super();
+			this.vertex = vertex;
+			this.cost = cost;
+			this.precessor = precessor;
+		}
+		public VertexInterface<T> getVertex() {
+			return vertex;
+		}
+		public double getCost() {
+			return cost;
+		}
+		public VertexInterface<T> getPrecessor() {
+			return precessor;
+		}
+		public void setVertex(VertexInterface<T> vertex) {
+			this.vertex = vertex;
+		}
+		public void setCost(double cost) {
+			this.cost = cost;
+		}
+		public void setPrecessor(VertexInterface<T> precessor) {
+			this.precessor = precessor;
+		}
 	}
 }

@@ -119,7 +119,10 @@ public class Vertex<T> implements VertexInterface<T> {
 	public VertexInterface<T> getPredcessor() {
 		return this.preVertex;
 	}
-
+	@Override
+	public boolean hasProcessor() {
+		return preVertex!=null;
+	}
 	@Override
 	public void setCost(double newCost) {
 		this.cost = newCost;

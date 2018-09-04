@@ -15,6 +15,7 @@ public interface VertexInterface<T> {
 	VertexInterface<T> getUnvisitedNeighbor();
 	void setPredecessor(VertexInterface<T> predecessor);
 	VertexInterface<T> getPredcessor();
+	boolean hasProcessor();
 	void setCost(double newCost);
 	double getCost();
 }
