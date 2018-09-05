@@ -164,7 +164,7 @@ public class DirectedGraph<T> implements BasicGraphInterface<T> {
 		return length;
 	}
 	//有权图最短路径
-	public getCheapestPath(T begin, T end, LinkedList<T> path) {
+	public double getCheapestPath(T begin, T end, LinkedList<T> path) {
 
 		Comparator<EntryPQ> comparator = new Comparator<EntryPQ>() {
 
@@ -179,9 +179,36 @@ public class DirectedGraph<T> implements BasicGraphInterface<T> {
 		EntryPQ beginEntry = new EntryPQ(beginVertex, 0, null);
 		priorityQueue.add(beginEntry);
 		boolean found = false;
-		while(!isEmpty() && found) {
-			
+		while(!priorityQueue.isEmpty() && !found) {
+			EntryPQ currEntry = priorityQueue.poll();
+			VertexInterface<T> currVer = currEntry.getVertex();
+			if(!currVer.isVisited()) {
+				currVer.visit();
+				currVer.setPredecessor(currEntry.getPrecessor());
+				currVer.setCost(currEntry.getCost());
+				if(currVer.equals(endVertex)) {
+					found = true;
+				} else {
+					Iterator<VertexInterface<T>> neighbor = currVer.getNeighborIterator();
+					while(neighbor.hasNext()) {
+						VertexInterface<T> nextNeighbor = neighbor.next();
+						double weight = nextNeighbor.getCost();
+						if(!nextNeighbor.isVisited()) {
+							double nextCost = weight + currVer.getCost();
+							priorityQueue.offer(new EntryPQ(nextNeighbor, nextCost, currVer));
+						}
+					}
+				}
+			}
 		}
+		double pathCost = endVertex.getCost();
+		path.push(endVertex.getLabel());
+		VertexInterface<T> curr = endVertex;
+		while(curr.hasProcessor()) {
+			path.push(curr.getLabel());
+			curr = curr.getPredcessor();
+		}
+		return pathCost;
 	}
 	private class EntryPQ{
 		private VertexInterface<T> vertex;
